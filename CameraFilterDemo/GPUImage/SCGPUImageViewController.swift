@@ -90,7 +90,7 @@ class SCGPUImageViewController: UIViewController {
             self.configFilterUI()
             
         case .gpuImage:
-            self.runGPUImage()
+            self.configGPUImageUI()
             
         case .gpuImageWithCamera:
             self.runGPUImageWithCamera()
@@ -119,8 +119,10 @@ extension SCGPUImageViewController {
                 self.addFilter(to: self.photoImgView)
 //                self.testFilter(to: self.photoImgView)
             }
+        
         case .gpuImage:
             self.runGPUImage()
+        
         case .gpuImageWithCamera:
             break
         }
@@ -130,13 +132,43 @@ extension SCGPUImageViewController {
 // MARK: - GPUImage
 extension SCGPUImageViewController {
     
+    func configGPUImageUI() {
+        
+        self.view.addSubview(self.photoImgView)
+        self.photoImgView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+
+        self.view.addSubview(self.actionBtn)
+        self.actionBtn.snp.makeConstraints { (make) in
+            make.width.equalTo(140)
+            make.height.equalTo(44)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(self.view.snp_bottomMargin).offset(-22)
+        }
+    }
+    
+    func runGPUImage() {
+        
+        print("=== Start to run GPUImage")
+        
+        let blurFilter = GPUImageGaussianBlurFilter()
+        blurFilter.blurRadiusInPixels = 2.0
+        let image = blurFilter.image(byFilteringImage: self.image)
+        self.photoImgView.image = image
+    }
+}
+
+// MARK: - GPUImageWithCamera
+extension SCGPUImageViewController {
+
     func runGPUImageWithCamera() {
         
         self.view.addSubview(self.previewView)
         self.previewView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-
+        
         print("=== Start to run runGPUImageWithCamera")
         
         self.videoCamera = GPUImageVideoCamera(sessionPreset: AVCaptureSession.Preset.vga640x480.rawValue, cameraPosition: .front)
@@ -145,19 +177,6 @@ extension SCGPUImageViewController {
         self.videoCamera?.addTarget(filter)
         self.filter?.addTarget(self.previewView as GPUImageView)
         self.videoCamera?.startCapture()
-    }
-    
-    
-    func runGPUImage() {
-        
-        self.configFilterUI()
-        
-        print("=== Start to run GPUImage")
-        
-        let blurFilter = GPUImageGaussianBlurFilter()
-        blurFilter.blurRadiusInPixels = 2.0
-        let image = blurFilter.image(byFilteringImage: self.image)
-        self.photoImgView.image = image
     }
 }
 

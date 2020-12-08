@@ -53,10 +53,6 @@ class MainViewController: UIViewController {
             make.top.equalTo(self.ciImageBtn.snp_bottomMargin).offset(44)
         }
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
 }
 
 // MARK: - Action / API
@@ -73,14 +69,4 @@ extension MainViewController {
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
-}
-
-// MARK: - GPUImage
-extension MainViewController {
-    
-}
-
-// MARK: - CIFilter
-extension MainViewController {
- 
 }
