@@ -7,6 +7,7 @@ target 'CameraFilterDemo' do
 
   # Pods for CameraFilterDemo
   pod 'SnapKit', '~> 5.0'
+  pod 'GPUImage'
 
   target 'CameraFilterDemoTests' do
     inherit! :search_paths

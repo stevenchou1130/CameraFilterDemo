@@ -8,36 +8,28 @@
 import UIKit
 import SnapKit
 
-/*
- * [Reference]
- * https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/667691/
- * https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/#//apple_ref/doc/uid/TP30000136-SW29
- * https://www.jianshu.com/p/2b54d18d111e
- */
 class MainViewController: UIViewController {
     
     // MARK: - Property
-    let image = UIImage(named: "filter-test-photo")
     
-    var isFilterOpened: Bool = false
-
     // MARK: - UI Content
-    lazy var actionBtn: UIButton = {
+    lazy var ciImageBtn: UIButton = {
         let b = UIButton()
         b.backgroundColor = .lightGray
-        b.setTitle("Action Button", for: .normal)
+        b.setTitle("Try CIImage", for: .normal)
         b.setTitleColor(.blue, for: .normal)
-        b.addTarget(self, action: #selector(didClickActionButton), for: .touchUpInside)
+        b.addTarget(self, action: #selector(didClickCIImageButton), for: .touchUpInside)
         return b
     }()
     
-    lazy var photoImgView: UIImageView = {
-        let v = UIImageView(image: self.image)
-        v.contentMode = .scaleAspectFit
-        return v
+    lazy var gpuImageBtn: UIButton = {
+        let b = UIButton()
+        b.backgroundColor = .lightGray
+        b.setTitle("Try GPUImage", for: .normal)
+        b.setTitleColor(.blue, for: .normal)
+        b.addTarget(self, action: #selector(didClickGPUImageButton), for: .touchUpInside)
+        return b
     }()
-    
-    // MARK: - Initialization
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -45,17 +37,20 @@ class MainViewController: UIViewController {
         
         self.view.backgroundColor = .white
         
-        self.view.addSubview(self.photoImgView)
-        self.photoImgView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-        }
-        
-        self.view.addSubview(self.actionBtn)
-        self.actionBtn.snp.makeConstraints { (make) in
+        self.view.addSubview(self.ciImageBtn)
+        self.ciImageBtn.snp.makeConstraints { (make) in
             make.width.equalTo(140)
             make.height.equalTo(44)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(self.view.snp_bottomMargin).offset(-22)
+            make.centerY.equalToSuperview()
+        }
+        
+        self.view.addSubview(self.gpuImageBtn)
+        self.gpuImageBtn.snp.makeConstraints { (make) in
+            make.width.equalTo(140)
+            make.height.equalTo(44)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(self.ciImageBtn.snp_bottomMargin).offset(44)
         }
     }
     
@@ -67,59 +62,25 @@ class MainViewController: UIViewController {
 // MARK: - Action / API
 extension MainViewController {
     
-    @objc func didClickActionButton() {
-        
-        if (self.isFilterOpened) {
-            self.removeFilter()
-        } else {
-            self.addFilter(to: self.photoImgView)
-        }
+    @objc func didClickCIImageButton() {
+        let vc = SCCIImageViewController()
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func didClickGPUImageButton() {
+        let vc = SCGPUImageViewController()
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true, completion: nil)
     }
 }
 
-// MARK: - Public
+// MARK: - GPUImage
 extension MainViewController {
     
 }
 
-// MARK: - Private
+// MARK: - CIFilter
 extension MainViewController {
  
-    private func addFilter(to imgView: UIImageView) {
-        
-        print("=== Start to add filter")
-        
-        guard let image = self.image else {
-            print("=== Default image is nil")
-            return
-        }
-        
-        let ciImage = CIImage(image: image)
-        let filter = CIFilter(name: "CISepiaTone")
-        filter?.setValue(ciImage, forKey: kCIInputImageKey)
-        
-        if let result = filter?.outputImage {
-            
-            print("=== Updated imageView")
-            
-            DispatchQueue.main.async {
-                imgView.image = UIImage(ciImage: result)
-            }
-            
-            self.isFilterOpened = true
-            
-        } else {
-            
-            print("=== The output image is nil")
-        }
-    }
-    
-    private func removeFilter() {
-        
-        print("=== Remove filter")
-        
-        self.photoImgView.image = self.image
-        
-        self.isFilterOpened = false
-    }
 }
