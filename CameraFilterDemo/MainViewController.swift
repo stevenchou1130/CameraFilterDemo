@@ -59,7 +59,7 @@ class MainViewController: UIViewController {
 extension MainViewController {
     
     @objc func didClickCIImageButton() {
-        let vc = SCCIImageViewController()
+        let vc = SCCIFilterViewController()
         let navi = UINavigationController(rootViewController: vc)
         navi.modalPresentationStyle = .fullScreen
         self.present(navi, animated: true, completion: nil)

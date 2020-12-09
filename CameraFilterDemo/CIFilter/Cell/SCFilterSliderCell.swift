@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol SCFilterSliderCellDelegate: AnyObject {
+    func didSlide(parameter: String, value: Float)
+    func didClickAction()
+}
+
 @objcMembers class SCFilterSliderCell: UITableViewCell {
     
     // MARK: - Property
-    var index: Int?
+    weak var delegate: SCFilterSliderCellDelegate?
     
     // MARK: - UI Content
     lazy var titleLabel: UILabel = {
@@ -25,6 +30,7 @@ import UIKit
         let s = UISlider(frame: .zero)
         s.minimumValue = 0
         s.maximumValue = 1
+        s.isContinuous = false
         s.addTarget(self, action: #selector(sliderValueDidChange(_ :)), for: .valueChanged)
         return s
     }()
@@ -35,6 +41,16 @@ import UIKit
         label.text = "0.00"
         label.textColor = .black
         return label
+    }()
+    
+    lazy var actionBtn: UIButton = {
+        let b = UIButton()
+        b.backgroundColor = .lightGray
+        b.setTitle("Apply filter", for: .normal)
+        b.setTitleColor(.blue, for: .normal)
+        b.addTarget(self, action: #selector(didClickActionButton), for: .touchUpInside)
+        b.isHidden = true
+        return b
     }()
     
     // MARK: - Initialization
@@ -64,6 +80,14 @@ import UIKit
             make.width.equalTo(150)
             make.centerY.equalToSuperview()
         }
+        
+        self.contentView.addSubview(self.actionBtn)
+        self.actionBtn.snp.makeConstraints { (make) in
+            make.height.equalTo(44)
+            make.width.equalTo(150)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -75,7 +99,6 @@ import UIKit
         super.layoutSubviews()
         
         self.titleLabel.sizeToFit()
-        
         self.numLabel.sizeToFit()
     }
 }
@@ -83,27 +106,47 @@ import UIKit
 // MARK: - Action
 extension SCFilterSliderCell {
     
-    func sliderValueDidChange(_ sender: UISlider) {
-        let num = String(format: "%.2f", sender.value)
-        self.numLabel.text = num
+    @objc func sliderValueDidChange(_ sender: UISlider) {
+        let n = sender.value.floor(toDecimal: 2)
+        self.numLabel.text = "\(n)"
+        
+        if let title = self.titleLabel.text {
+            self.delegate?.didSlide(parameter: title, value: n)
+        }
+    }
+    
+    @objc func didClickActionButton() {
+        self.delegate?.didClickAction()
     }
 }
 
 // MARK: - Public
 extension SCFilterSliderCell {
     
-    func update(index: Int, title: String) {
-        self.index = index
+    func update(title: String, defaultValue: Float) {
+        self.configUI(isActionButtonStyle: false)
         self.titleLabel.text = title
-        self.resetSlider()
+        self.resetSlider(defaultValue: defaultValue)
+    }
+    
+    func update() {
+        self.configUI(isActionButtonStyle: true)
     }
 }
 
 // MARK: - Private
 extension SCFilterSliderCell {
     
-    private func resetSlider() {
-        self.slider.value = 0
-        self.numLabel.text = "0.00"
+    private func configUI(isActionButtonStyle: Bool) {
+        self.actionBtn.isHidden = !isActionButtonStyle
+        
+        self.titleLabel.isHidden = isActionButtonStyle
+        self.slider.isHidden = isActionButtonStyle
+        self.numLabel.isHidden = isActionButtonStyle
+    }
+    
+    private func resetSlider(defaultValue: Float) {
+        self.slider.value = defaultValue
+        self.numLabel.text = "\(defaultValue)"
     }
 }
