@@ -60,8 +60,9 @@ extension MainViewController {
     
     @objc func didClickCIImageButton() {
         let vc = SCCIImageViewController()
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        let navi = UINavigationController(rootViewController: vc)
+        navi.modalPresentationStyle = .fullScreen
+        self.present(navi, animated: true, completion: nil)
     }
     
     @objc func didClickGPUImageButton() {

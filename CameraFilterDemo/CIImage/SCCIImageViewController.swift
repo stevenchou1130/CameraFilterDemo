@@ -9,17 +9,14 @@ import UIKit
 
 @objcMembers class SCCIImageViewController: UIViewController {
     
-    // MARK: - Property
+    enum FilterStyle {
+        case highlightShadowAdjust, exposureAdjust, colorControls, photoEffectChrome, photoEffectFade
+    }
     
+    // MARK: - Property
+    var style: FilterStyle = .highlightShadowAdjust
+
     // MARK: - UI Content
-    lazy var closeBtn: UIButton = {
-        let b = UIButton(type: .custom)
-        let image = UIImage(named: "close-btn")?.withRenderingMode(.alwaysTemplate)
-        b.setImage(image, for: .normal)
-        b.tintColor = .blue
-        b.addTarget(self, action: #selector(didClickCloseButton), for: .touchUpInside)
-        return b
-    }()
     
     // MARK: - Initialization
     init() {
@@ -36,25 +33,19 @@ import UIKit
         
         self.view.backgroundColor = .white
         
-        self.view.addSubview(self.closeBtn)
-        self.closeBtn.snp.makeConstraints { (make) in
-            make.width.equalTo(44)
-            make.height.equalTo(44)
-            make.top.equalTo(44)
-            make.left.equalTo(22)
-        }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+        self.configNavi()
     }
 }
 
 // MARK: - Action
 extension SCCIImageViewController {
     
-    @objc func didClickCloseButton() {
+    @objc func didClickCloseButton(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func didClickSelectButton(_ sender: UIButton) {
+        self.showMoreActionsSheet()
     }
 }
 
@@ -66,4 +57,39 @@ extension SCCIImageViewController {
 // MARK: - Private
 extension SCCIImageViewController {
     
+    private func configNavi() {
+        let closeBtn = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didClickCloseButton(_:)))
+        self.navigationItem.setLeftBarButton(closeBtn, animated: false);
+        
+        let selectBtn = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didClickSelectButton(_:)))
+        self.navigationItem.setRightBarButton(selectBtn, animated: false);
+    }
+    
+    private func showMoreActionsSheet() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "CIHighlightShadowAdjust", style: .default) { (_) in
+            self.style = .highlightShadowAdjust
+        })
+
+        alert.addAction(UIAlertAction(title: "CIExposureAdjust", style: .default) { (_) in
+            self.style = .exposureAdjust
+        })
+
+        alert.addAction(UIAlertAction(title: "CIColorControls", style: .default) { (_) in
+            self.style = .colorControls
+        })
+        
+        alert.addAction(UIAlertAction(title: "CIPhotoEffectChrome", style: .default) { (_) in
+            self.style = .photoEffectChrome
+        })
+        
+        alert.addAction(UIAlertAction(title: "CIPhotoEffectFade", style: .default) { (_) in
+            self.style = .photoEffectFade
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
 }
