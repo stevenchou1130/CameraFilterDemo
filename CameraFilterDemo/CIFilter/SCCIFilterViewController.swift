@@ -172,7 +172,7 @@ extension SCCIFilterViewController {
     
     private func configUIContent() {
         let screenW = UIScreen.main.bounds.size.width
-        let photoSide = screenW / 5 * 4
+        let photoSide = screenW
         
         self.view.addSubview(self.photoImgView)
         self.photoImgView.snp.makeConstraints { (make) in
@@ -184,7 +184,7 @@ extension SCCIFilterViewController {
         
         self.view.addSubview(self.tableView)
         self.tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.photoImgView.snp_bottomMargin).offset(44)
+            make.top.equalTo(self.photoImgView.snp_bottomMargin).offset(22)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()

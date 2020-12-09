@@ -149,11 +149,11 @@
 		B0F6EC102570C52900D6E3B6 /* CameraFilterDemo */ = {
 			isa = PBXGroup;
 			children = (
-				B0FDFA4725809E5300617D5D /* Extension */,
-				B0FDFA19257F863600617D5D /* CIFilter */,
-				B0FDFA1A257F864B00617D5D /* GPUImage */,
 				B0F6EC112570C52900D6E3B6 /* AppDelegate.swift */,
 				B0F6EC132570C52900D6E3B6 /* SceneDelegate.swift */,
+				B0FDFA19257F863600617D5D /* CIFilter */,
+				B0FDFA1A257F864B00617D5D /* GPUImage */,
+				B0FDFA4725809E5300617D5D /* Extension */,
 				B0F6EC152570C52900D6E3B6 /* MainViewController.swift */,
 				B0F6EC172570C52900D6E3B6 /* Main.storyboard */,
 				B0F6EC1A2570C52D00D6E3B6 /* Assets.xcassets */,

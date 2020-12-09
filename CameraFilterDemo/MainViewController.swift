@@ -11,6 +11,7 @@ import SnapKit
 class MainViewController: UIViewController {
     
     // MARK: - Property
+    let isOnlyCIImage: Bool = true
     
     // MARK: - UI Content
     lazy var ciImageBtn: UIButton = {
@@ -43,6 +44,10 @@ class MainViewController: UIViewController {
             make.height.equalTo(44)
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
+        }
+        
+        if (self.isOnlyCIImage) {
+            return
         }
         
         self.view.addSubview(self.gpuImageBtn)

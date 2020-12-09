@@ -30,7 +30,6 @@ protocol SCFilterSliderCellDelegate: AnyObject {
         let s = UISlider(frame: .zero)
         s.minimumValue = 0
         s.maximumValue = 1
-        s.isContinuous = false
         s.addTarget(self, action: #selector(sliderValueDidChange(_ :)), for: .valueChanged)
         return s
     }()
@@ -64,21 +63,21 @@ protocol SCFilterSliderCellDelegate: AnyObject {
         self.contentView.addSubview(self.titleLabel)
         self.titleLabel.snp.makeConstraints { (make) in
             make.left.equalTo(self.contentView.snp_leftMargin)
-            make.centerY.equalToSuperview()
+            make.top.equalTo(12)
         }
         
         self.contentView.addSubview(self.numLabel)
         self.numLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.titleLabel.snp_bottomMargin).offset(16)
             make.right.equalTo(self.contentView.snp_rightMargin)
             make.width.equalTo(44)
-            make.centerY.equalToSuperview()
         }
         
         self.contentView.addSubview(self.slider)
         self.slider.snp.makeConstraints { (make) in
+            make.left.equalTo(self.contentView.snp_leftMargin)
             make.right.equalTo(self.numLabel.snp_leftMargin).offset(-16)
-            make.width.equalTo(150)
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(self.numLabel.snp_centerYWithinMargins)
         }
         
         self.contentView.addSubview(self.actionBtn)
