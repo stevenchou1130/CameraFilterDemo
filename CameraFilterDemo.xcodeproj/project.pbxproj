@@ -20,6 +20,8 @@
 		B0F6EC342570C52D00D6E3B6 /* CameraFilterDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6EC332570C52D00D6E3B6 /* CameraFilterDemoUITests.swift */; };
 		B0FDFA32257F875900617D5D /* SCGPUImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FDFA31257F875900617D5D /* SCGPUImageViewController.swift */; };
 		B0FDFA37257F877400617D5D /* SCCIImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FDFA36257F877400617D5D /* SCCIImageViewController.swift */; };
+		B0FDFA4025809BC900617D5D /* SCFilterSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FDFA3F25809BC900617D5D /* SCFilterSliderCell.swift */; };
+		B0FDFA4925809E6C00617D5D /* UITableView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FDFA4825809E6C00617D5D /* UITableView+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,8 @@
 		B0F6EC352570C52D00D6E3B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0FDFA31257F875900617D5D /* SCGPUImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCGPUImageViewController.swift; sourceTree = "<group>"; };
 		B0FDFA36257F877400617D5D /* SCCIImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCCIImageViewController.swift; sourceTree = "<group>"; };
+		B0FDFA3F25809BC900617D5D /* SCFilterSliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCFilterSliderCell.swift; sourceTree = "<group>"; };
+		B0FDFA4825809E6C00617D5D /* UITableView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Ext.swift"; sourceTree = "<group>"; };
 		C38742411E6A17C7660AFAA1 /* Pods-CameraFilterDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CameraFilterDemo.release.xcconfig"; path = "Target Support Files/Pods-CameraFilterDemo/Pods-CameraFilterDemo.release.xcconfig"; sourceTree = "<group>"; };
 		C6C070D2EA69F6CF51D5651F /* Pods-CameraFilterDemo-CameraFilterDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CameraFilterDemo-CameraFilterDemoUITests.release.xcconfig"; path = "Target Support Files/Pods-CameraFilterDemo-CameraFilterDemoUITests/Pods-CameraFilterDemo-CameraFilterDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		F092D7D2C955EBC454463407 /* Pods-CameraFilterDemo-CameraFilterDemoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CameraFilterDemo-CameraFilterDemoUITests.debug.xcconfig"; path = "Target Support Files/Pods-CameraFilterDemo-CameraFilterDemoUITests/Pods-CameraFilterDemo-CameraFilterDemoUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 		B0F6EC102570C52900D6E3B6 /* CameraFilterDemo */ = {
 			isa = PBXGroup;
 			children = (
+				B0FDFA4725809E5300617D5D /* Extension */,
 				B0FDFA19257F863600617D5D /* CIImage */,
 				B0FDFA1A257F864B00617D5D /* GPUImage */,
 				B0F6EC112570C52900D6E3B6 /* AppDelegate.swift */,
@@ -177,6 +182,7 @@
 		B0FDFA19257F863600617D5D /* CIImage */ = {
 			isa = PBXGroup;
 			children = (
+				B0FDFA3E25809B9700617D5D /* Cell */,
 				B0FDFA36257F877400617D5D /* SCCIImageViewController.swift */,
 			);
 			path = CIImage;
@@ -188,6 +194,22 @@
 				B0FDFA31257F875900617D5D /* SCGPUImageViewController.swift */,
 			);
 			path = GPUImage;
+			sourceTree = "<group>";
+		};
+		B0FDFA3E25809B9700617D5D /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B0FDFA3F25809BC900617D5D /* SCFilterSliderCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		B0FDFA4725809E5300617D5D /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B0FDFA4825809E6C00617D5D /* UITableView+Ext.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -430,7 +452,9 @@
 			files = (
 				B0F6EC162570C52900D6E3B6 /* MainViewController.swift in Sources */,
 				B0FDFA32257F875900617D5D /* SCGPUImageViewController.swift in Sources */,
+				B0FDFA4025809BC900617D5D /* SCFilterSliderCell.swift in Sources */,
 				B0F6EC122570C52900D6E3B6 /* AppDelegate.swift in Sources */,
+				B0FDFA4925809E6C00617D5D /* UITableView+Ext.swift in Sources */,
 				B0FDFA37257F877400617D5D /* SCCIImageViewController.swift in Sources */,
 				B0F6EC142570C52900D6E3B6 /* SceneDelegate.swift in Sources */,
 			);
