@@ -9,9 +9,11 @@ import UIKit
 
 @objcMembers class SCCIFilterViewController: UIViewController {
     
-    enum FilterStyle {
+    enum FilterStyle: Int, CaseIterable {
         
-        case highlightShadowAdjust, exposureAdjust, colorControls, photoEffectChrome, photoEffectFade
+        case highlightShadowAdjust, exposureAdjust, photoEffectChrome
+//        case medianFilter, colorMatrix, vibrance, convolution3X3      // TODO
+        case colorControls, photoEffectFade
         
         var filterName: String {
             switch self {
@@ -19,10 +21,20 @@ import UIKit
                 return "CIHighlightShadowAdjust"
             case .exposureAdjust:
                 return "CIExposureAdjust"
-            case .colorControls:
-                return "CIColorControls"
             case .photoEffectChrome:
                 return "CIPhotoEffectChrome"
+                
+//            case .medianFilter:
+//                return "CIMedianFilter"
+//            case .colorMatrix:
+//                return "CIColorMatrix"
+//            case .vibrance:
+//                return "CIVibrance"
+//            case .convolution3X3:
+//                return "CIConvolution3X3"
+                
+            case .colorControls:
+                return "CIColorControls"
             case .photoEffectFade:
                 return "CIPhotoEffectFade"
             }
@@ -34,32 +46,45 @@ import UIKit
                 return [("inputHighlightAmount", 1.0), ("inputShadowAmount", 0.0)]
             case .exposureAdjust:
                 return [("inputEV", 0.5)]
-            case .colorControls:
-                return [("inputSaturation", 1.0), ("inputBrightness", 0.0), ("inputContrast", 1.0)]
             case .photoEffectChrome:
                 return []
+            
+//            case .medianFilter:
+//                return []
+//            case .colorMatrix:
+//                return []
+//            case .vibrance:
+//                return []
+//            case .convolution3X3:
+//                return []
+                
+            case .colorControls:
+                return [("inputSaturation", 1.0), ("inputBrightness", 0.0), ("inputContrast", 1.0)]
             case .photoEffectFade:
                 return []
             }
         }
         
         var isActionButtonNeeded: Bool {
-            return (self == .photoEffectChrome || self == .photoEffectFade)
+            return (self.parameters.count == 0)
         }
     }
     
     // MARK: - Property
+    let screenW = UIScreen.main.bounds.size.width
     let context: CIContext
     var image = UIImage(named: "filter-test-photo")!
     var isFilterOpened: Bool = false
-    
-    var style: FilterStyle = .highlightShadowAdjust {
+
+    var style: FilterStyle {
         didSet {
             self.navigationItem.title = self.style.filterName
             self.removeFilter()
             self.tableView.reloadData()
         }
     }
+    
+    var pickerSelectedStyle: FilterStyle
 
     // MARK: - UI Content
     lazy var photoImgView: UIImageView = {
@@ -79,7 +104,12 @@ import UIKit
     
     // MARK: - Initialization
     init() {
+        let defaultStyle: FilterStyle = .highlightShadowAdjust
+        self.style = defaultStyle
+        self.pickerSelectedStyle = defaultStyle
+        
         self.context = CIContext()
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -106,7 +136,7 @@ extension SCCIFilterViewController {
     }
     
     @objc func didClickSelectButton(_ sender: UIButton) {
-        self.showMoreActionsSheet()
+        self.showFilterPickerInActionSheet()
     }
 }
 
@@ -167,12 +197,33 @@ extension SCCIFilterViewController: UIImagePickerControllerDelegate & UINavigati
     }
 }
 
+// MARK: - UIPickerView
+extension SCCIFilterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return FilterStyle.allCases.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return "\(FilterStyle.allCases[row].filterName)"
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        print("=== didSelect: \(FilterStyle.allCases[row].filterName)")
+        self.pickerSelectedStyle = FilterStyle.allCases[row]
+    }
+}
+
 // MARK: - Private
 extension SCCIFilterViewController {
     
     private func configUIContent() {
-        let screenW = UIScreen.main.bounds.size.width
-        let photoSide = screenW
+        
+        let photoSide = self.screenW
         
         self.view.addSubview(self.photoImgView)
         self.photoImgView.snp.makeConstraints { (make) in
@@ -201,7 +252,40 @@ extension SCCIFilterViewController {
         self.navigationItem.title = self.style.filterName
     }
     
-    private func showMoreActionsSheet() {
+    private func showFilterPickerInActionSheet() {
+        
+        self.pickerSelectedStyle = .highlightShadowAdjust
+        
+        let alert = UIAlertController(title: nil, message: "\n\n\n\n\n\n\n\n\n\n\n", preferredStyle: .actionSheet)
+        alert.isModalInPopover = true
+
+        let pickerFrame: CGRect = CGRect(x: 0, y: 0, width: self.screenW - 88, height: 120)
+        let picker = UIPickerView(frame: pickerFrame)
+        picker.delegate = self
+        picker.dataSource = self
+        alert.view.addSubview(picker)
+        picker.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+        }
+        
+        alert.addAction(UIAlertAction(title: "從相簿上傳照片", style: .default) { (_) in
+            let imagePicker = UIImagePickerController()
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.delegate = self
+            self.present(imagePicker, animated: true)
+        })
+        
+        alert.addAction(UIAlertAction(title: "確定", style: .default) { (_) in
+            self.style = self.pickerSelectedStyle
+        })
+        
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // DEPRECATED
+    private func showFilterActionSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         alert.addAction(UIAlertAction(title: "從相簿上傳照片", style: .default) { (_) in
@@ -219,17 +303,17 @@ extension SCCIFilterViewController {
             self.style = .exposureAdjust
         })
 
-        alert.addAction(UIAlertAction(title: FilterStyle.colorControls.filterName, style: .default) { (_) in
-            self.style = .colorControls
-        })
+//        alert.addAction(UIAlertAction(title: FilterStyle.colorControls.filterName, style: .default) { (_) in
+//            self.style = .colorControls
+//        })
         
         alert.addAction(UIAlertAction(title: FilterStyle.photoEffectChrome.filterName, style: .default) { (_) in
             self.style = .photoEffectChrome
         })
         
-        alert.addAction(UIAlertAction(title: FilterStyle.photoEffectFade.filterName, style: .default) { (_) in
-            self.style = .photoEffectFade
-        })
+//        alert.addAction(UIAlertAction(title: FilterStyle.photoEffectFade.filterName, style: .default) { (_) in
+//            self.style = .photoEffectFade
+//        })
         
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
