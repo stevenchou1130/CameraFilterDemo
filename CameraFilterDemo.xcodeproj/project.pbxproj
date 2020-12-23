@@ -10,6 +10,7 @@
 		02F3E21B825627F56F990CCB /* Pods_CameraFilterDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F63EF096AA9A2325FF58E8C1 /* Pods_CameraFilterDemoTests.framework */; };
 		1B0E310690033F9C15697C21 /* Pods_CameraFilterDemo_CameraFilterDemoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81501C060F6DD7A3D3DA3414 /* Pods_CameraFilterDemo_CameraFilterDemoUITests.framework */; };
 		615C60B38C10293EB6B94F91 /* Pods_CameraFilterDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B1CC7DB0C0D8A49607B3A6 /* Pods_CameraFilterDemo.framework */; };
+		B07ADB8225930F3200B4775F /* SCTakePhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07ADB8125930F3200B4775F /* SCTakePhotoViewController.swift */; };
 		B0F6EC122570C52900D6E3B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6EC112570C52900D6E3B6 /* AppDelegate.swift */; };
 		B0F6EC142570C52900D6E3B6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6EC132570C52900D6E3B6 /* SceneDelegate.swift */; };
 		B0F6EC162570C52900D6E3B6 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6EC152570C52900D6E3B6 /* MainViewController.swift */; };
@@ -48,6 +49,7 @@
 		81501C060F6DD7A3D3DA3414 /* Pods_CameraFilterDemo_CameraFilterDemoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CameraFilterDemo_CameraFilterDemoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B86101500FCB6292BF98E2A /* Pods-CameraFilterDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CameraFilterDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-CameraFilterDemoTests/Pods-CameraFilterDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A2B1CC7DB0C0D8A49607B3A6 /* Pods_CameraFilterDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CameraFilterDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B07ADB8125930F3200B4775F /* SCTakePhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCTakePhotoViewController.swift; sourceTree = "<group>"; };
 		B0F6EC0E2570C52900D6E3B6 /* CameraFilterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraFilterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0F6EC112570C52900D6E3B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0F6EC132570C52900D6E3B6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +126,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		B07ADB8025930F0300B4775F /* CropImage */ = {
+			isa = PBXGroup;
+			children = (
+				B07ADB8125930F3200B4775F /* SCTakePhotoViewController.swift */,
+			);
+			path = CropImage;
+			sourceTree = "<group>";
+		};
 		B0F6EC052570C52900D6E3B6 = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +163,7 @@
 				B0F6EC132570C52900D6E3B6 /* SceneDelegate.swift */,
 				B0FDFA19257F863600617D5D /* CIFilter */,
 				B0FDFA1A257F864B00617D5D /* GPUImage */,
+				B07ADB8025930F0300B4775F /* CropImage */,
 				B0FDFA4725809E5300617D5D /* Extension */,
 				B0F6EC152570C52900D6E3B6 /* MainViewController.swift */,
 				B0F6EC172570C52900D6E3B6 /* Main.storyboard */,
@@ -460,6 +471,7 @@
 				B0FDFA512580AFF700617D5D /* Float+Ext.swift in Sources */,
 				B0FDFA4925809E6C00617D5D /* UITableView+Ext.swift in Sources */,
 				B0FDFA37257F877400617D5D /* SCCIFilterViewController.swift in Sources */,
+				B07ADB8225930F3200B4775F /* SCTakePhotoViewController.swift in Sources */,
 				B0F6EC142570C52900D6E3B6 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
