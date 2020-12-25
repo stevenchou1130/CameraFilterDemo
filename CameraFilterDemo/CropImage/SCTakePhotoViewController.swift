@@ -25,6 +25,7 @@ import UIKit
     
     lazy var imageView: UIImageView = {
         let v: UIImageView = UIImageView(frame: .zero)
+        v.contentMode = .scaleAspectFit
         v.backgroundColor = .lightGray
         return v
     }()
@@ -103,8 +104,24 @@ extension SCTakePhotoViewController {
 extension SCTakePhotoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        self.imageView.image = pickedImage
+        
+        guard let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+            print("ERROR: pickedImage is nil")
+            return
+        }
+        
+        guard let cropRect = self.cropImageRect else {
+            print("ERROR: cropImageRect is nil")
+            return
+        }
+        
+        let cameraViewW = self.view.frame.width
+        let cameraViewH = cameraViewW / 3 * 4
+        self.imageView.image = self.cropImage(pickedImage.fixOrientation(),
+                                              toRect: cropRect,
+                                              viewWidth: cameraViewW,
+                                              viewHeight: cameraViewH)
+        
         picker.dismiss(animated: true, completion: nil)
     }
     
@@ -182,6 +199,28 @@ extension SCTakePhotoViewController {
         v.layer.addSublayer(centerLayer)
         v.layer.addSublayer(fillLayer)
         self.imagePicker.cameraOverlayView = v
+    }
+    
+    private func cropImage(_ inputImage: UIImage, toRect cropRect: CGRect, viewWidth: CGFloat, viewHeight: CGFloat) -> UIImage?
+    {
+        let imageViewScale = max(inputImage.size.width / viewWidth,
+                                 inputImage.size.height / viewHeight)
+
+        // Scale cropRect to handle images larger than shown-on-screen size
+        let cropZone = CGRect(x:cropRect.origin.x * imageViewScale,
+                              y:cropRect.origin.y * imageViewScale,
+                              width:cropRect.size.width * imageViewScale,
+                              height:cropRect.size.height * imageViewScale)
+
+        // Perform cropping in Core Graphics
+        guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone)
+        else {
+            return nil
+        }
+        
+        // Return image to UIImage
+        let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
+        return croppedImage
     }
     
     private func addCameraNotificaionObserver() {
